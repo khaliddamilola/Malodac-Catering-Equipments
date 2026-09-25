@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery | Malodac Ventures</title>
+    <meta name="description" content="Browse photos of Malodac Ventures catering equipment: chafing dishes, dinner sets, serving pieces and drink dispensers.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+
+    <script>document.documentElement.classList.add('js');</script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">Malodac Ventures</a>
+
+            <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="nav" id="site-nav" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="index.html#categories">Products</a>
+                <a href="services.html">Services</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="contact.html">Contact</a>
+                <button class="btn btn-primary btn-sm" type="button" data-open-signup>Sign Up</button>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <section class="page-banner banner-gallery">
+            <div class="container">
+                <h1>Gallery</h1>
+                <nav class="breadcrumb" aria-label="Breadcrumb">
+                    <a href="index.html">Home</a> &gt; <span aria-current="page">Gallery</span>
+                </nav>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="section-head" data-reveal>
+                    <h2>Our equipment in pictures</h2>
+                    <p>Filter by type, then tap a photo to see it larger.</p>
+                </div>
+
+                <!-- Filter buttons: data-filter must match a data-category below -->
+                <div class="filters" role="group" aria-label="Filter gallery by category">
+                    <button class="filter-btn" type="button" data-filter="all" aria-pressed="true">All</button>
+                    <button class="filter-btn" type="button" data-filter="chafing" aria-pressed="false">Chafing dishes</button>
+                    <button class="filter-btn" type="button" data-filter="dinnerware" aria-pressed="false">Dinnerware</button>
+                    <button class="filter-btn" type="button" data-filter="serving" aria-pressed="false">Serving pieces</button>
+                    <button class="filter-btn" type="button" data-filter="dispensers" aria-pressed="false">Dispensers</button>
+                </div>
+
+                <p class="gallery-count" id="gallery-count" role="status" aria-live="polite">Showing 9 of 9 items</p>
+
+                <!-- Photos with class "is-photo" are real photographs (cropped to fill the tile);
+                     the others are cut-out product images (shown whole). -->
+                <ul class="gallery-grid">
+                    <li class="gallery-cell" data-category="chafing" data-title="Rolltop chafing dish">
+                        <button class="gallery-item" type="button" aria-label="View Rolltop chafing dish larger">
+                            <img src="images/malodacimage3.png" width="510" height="490" loading="lazy" alt="Gold round rolltop chafing dish">
+                            <span class="gallery-caption">Rolltop chafing dish</span>
+                        </button>
+                    </li>
+                    <li class="gallery-cell" data-category="dinnerware" data-title="Grey ribbed dinner set">
+                        <button class="gallery-item" type="button" aria-label="View Grey ribbed dinner set larger">
+                            <img src="images/malodacimage1.png" width="638" height="391" loading="lazy" alt="Grey ribbed dinner set with a bowl and two plates">
+                            <span class="gallery-caption">Grey ribbed dinner set</span>
+                        </button>
+                    </li>
+                    <li class="gallery-cell" data-category="dispensers" data-title="Double drink dispenser">
+                        <button class="gallery-item" type="button" aria-label="View Double drink dispenser larger">
+                            <img src="images/malodacimage2.png" width="335" height="746" loading="lazy" alt="Double drink dispenser filled with red and orange juice">
+                            <span class="gallery-caption">Double drink dispenser</span>
+                        </button>
+                    </li>
+                    <li class="gallery-cell" data-category="chafing" data-title="Red chafing dish">
+                        <button class="gallery-item" type="button" aria-label="View Red chafing dish larger">
+                            <img src="images/malodacimage4.png" width="577" height="433" loading="lazy" alt="Red rectangular chafing dish with a glass lid">
+                            <span class="gallery-caption">Red chafing dish</span>
+                        </button>
+                    </li>
+                    <li class="gallery-cell" data-category="dinnerware" data-title="Gold-rim serving plates">
+                        <button class="gallery-item" type="button" aria-label="View Gold-rim serving plates larger">
+                            <img src="images/malodacimage6.png" width="666" height="375" loading="lazy" alt="Stack of white serving plates with gold rims">
+                            <span class="gallery-caption">Gold-rim serving plates</span>
+                        </button>
+                    </li>
+                    <li class="gallery-cell" data-category="serving" data-title="Serving dome on stand">
+                        <button class="gallery-item" type="button" aria-label="View Serving dome on stand larger">
+                            <img src="images/malodacimage5.png" width="387" height="645" loading="lazy" alt="White serving dome with gold trim on a gold stand">
+                            <span class="gallery-caption">Serving dome on stand</span>
+                        </button>
+                    </li>
+                    <li class="gallery-cell is-photo" data-category="serving" data-title="Rose gold food warmer set">
+                        <button class="gallery-item" type="button" aria-label="View Rose gold food warmer set larger">
+                            <img src="images/bg2.png" width="1070" height="706" loading="lazy" alt="Three rose gold and gold food warmers stacked together">
+                            <span class="gallery-caption">Rose gold food warmer set</span>
+                        </button>
+                    </li>
+                    <li class="gallery-cell is-photo" data-category="chafing" data-title="Gold round chafing dish">
+                        <button class="gallery-item" type="button" aria-label="View Gold round chafing dish larger">
+                            <img src="images/fornow.png" width="356" height="342" loading="lazy" alt="Gold round chafing dish with a smoked glass lid on a table">
+                            <span class="gallery-caption">Gold round chafing dish</span>
+                        </button>
+                    </li>
+                    <li class="gallery-cell" data-category="serving" data-title="Catering essentials collection">
+                        <button class="gallery-item" type="button" aria-label="View Catering essentials collection larger">
+                            <img src="images/background.png" width="608" height="410" loading="lazy" alt="Collection of coolers, gold serving bowls, plates and cutlery">
+                            <span class="gallery-caption">Catering essentials collection</span>
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="gallery-empty" id="gallery-empty" hidden>
+                    <p>No photos in this category yet. Check back soon.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CALL TO ACTION -->
+        <section class="section" style="padding-top: 0;">
+            <div class="container">
+                <div class="cta cta-band" data-reveal>
+                    <div class="cta-line" aria-hidden="true"></div>
+                    <div>
+                        <h2>See something you like?</h2>
+                        <p>Open any photo and tap Enquire, or message us to ask about price and availability.</p>
+                    </div>
+                    <a class="btn btn-primary" href="contact.html">Contact us <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h2>Malodac Ventures</h2>
+                    <p>Your satisfaction, our priority.</p>
+                </div>
+
+                <div class="social">
+                    <a href="https://wa.me/2348023053256" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a> <!-- TODO: add your Instagram URL -->
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a>   <!-- TODO: add your Facebook URL -->
+                    <a href="https://www.tiktok.com/@malodac.catering" target="_blank" rel="noopener" aria-label="TikTok"><i class="fa-brands fa-tiktok" aria-hidden="true"></i></a>
+                </div>
+
+                <nav class="footer-links" aria-label="Footer navigation">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="index.html#categories">Products</a>
+                    <a href="services.html">Services</a>
+                    <a href="gallery.html">Gallery</a>
+                    <a href="contact.html">Contact</a>
+                </nav>
+            </div>
+            <p class="copyright">&copy; <span data-year>2026</span> Malodac Ventures. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

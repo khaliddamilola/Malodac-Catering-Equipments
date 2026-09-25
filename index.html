@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malodac Ventures | Catering &amp; Cooking Equipment</title>
+    <meta name="description" content="Malodac Ventures supplies high quality catering and cooking equipment in Lagos, Nigeria: chafing dishes, dinner sets, dispensers, coolers and more.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Lets the CSS know JavaScript is available (used by the scroll animations) -->
+    <script>document.documentElement.classList.add('js');</script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">Malodac Ventures</a>
+
+            <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="nav" id="site-nav" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="index.html#categories">Products</a>
+                <a href="services.html">Services</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="contact.html">Contact</a>
+                <button class="btn btn-primary btn-sm" type="button" data-open-signup>Sign Up</button>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <!-- HERO -->
+        <section class="hero">
+            <div class="container hero-inner">
+                <div class="hero-text" data-reveal>
+                    <h1>Cooking equipment <span>is available for sale</span></h1>
+                    <p>We provide high quality cooking equipment for all kinds of catering services, events, restaurants and more.</p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#categories">Browse products</a>
+                        <a class="btn btn-outline" href="contact.html">Contact us</a>
+                    </div>
+                </div>
+
+                <div class="hero-media" data-reveal style="--delay: .15s">
+                    <img src="images/background.png" width="608" height="410"
+                         alt="Catering equipment: red coolers, gold serving bowls, plates, cutlery and a hanging food warmer">
+                </div>
+            </div>
+        </section>
+
+        <!-- WHY US -->
+        <section class="features" aria-label="Why choose Malodac Ventures">
+            <div class="container">
+                <div class="features-band" data-reveal>
+                    <div class="feature">
+                        <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+                        <div>
+                            <h3>High quality</h3>
+                            <p>Durable and long lasting products</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <i class="fa-solid fa-award" aria-hidden="true"></i>
+                        <div>
+                            <h3>Affordable prices</h3>
+                            <p>Quality equipment at the best prices</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <i class="fa-solid fa-truck" aria-hidden="true"></i>
+                        <div>
+                            <h3>Fast delivery</h3>
+                            <p>Quick delivery to your doorstep</p>
+                        </div>
+                    </div>
+                    <div class="feature">
+                        <i class="fa-solid fa-phone" aria-hidden="true"></i>
+                        <div>
+                            <h3>Customer support</h3>
+                            <p>We are always here to help you</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CATEGORIES -->
+        <section class="section" id="categories">
+            <div class="container">
+                <div class="section-head" data-reveal>
+                    <h2>Categories</h2>
+                    <p>Shop from our wide range of catering equipment</p>
+                </div>
+
+                <!-- Each card opens the contact form with the product name pre-filled -->
+                <ul class="category-grid">
+                    <li data-reveal>
+                        <a class="category-card" href="contact.html?product=Dinner%20set">
+                            <div class="thumb"><img src="images/malodacimage1.png" width="638" height="391" loading="lazy" alt="Grey ribbed dinner set"></div>
+                            <p>Dinner set</p>
+                        </a>
+                    </li>
+                    <li data-reveal style="--delay: .05s">
+                        <a class="category-card" href="contact.html?product=Drink%20dispenser">
+                            <div class="thumb"><img src="images/malodacimage2.png" width="335" height="746" loading="lazy" alt="Double juice dispenser"></div>
+                            <p>Dispensers</p>
+                        </a>
+                    </li>
+                    <li data-reveal style="--delay: .1s">
+                        <a class="category-card" href="contact.html?product=Rolltop%20chafing%20dish">
+                            <div class="thumb"><img src="images/malodacimage3.png" width="510" height="490" loading="lazy" alt="Gold round rolltop chafing dish"></div>
+                            <p>Rolltop chafing dish</p>
+                        </a>
+                    </li>
+                    <li data-reveal style="--delay: .15s">
+                        <a class="category-card" href="contact.html?product=Red%20chafing%20dish">
+                            <div class="thumb"><img src="images/malodacimage4.png" width="577" height="433" loading="lazy" alt="Red rectangular chafing dish"></div>
+                            <p>Red chafing dish</p>
+                        </a>
+                    </li>
+                    <li data-reveal style="--delay: .2s">
+                        <a class="category-card" href="contact.html?product=Serving%20dome">
+                            <div class="thumb"><img src="images/malodacimage5.png" width="387" height="645" loading="lazy" alt="White serving dome with gold trim on a stand"></div>
+                            <p>Serving dome</p>
+                        </a>
+                    </li>
+                    <li data-reveal style="--delay: .25s">
+                        <a class="category-card" href="contact.html?product=Serving%20plates">
+                            <div class="thumb"><img src="images/malodacimage6.png" width="666" height="375" loading="lazy" alt="Stacked white serving plates with gold rims"></div>
+                            <p>Serving plates</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SHOP NOW BANNER -->
+        <section class="section" style="padding-top: 0;">
+            <div class="container">
+                <div class="cta" data-reveal>
+                    <div class="cta-line" aria-hidden="true"></div>
+                    <div>
+                        <h2>Quality equipment for your catering needs</h2>
+                        <p>Make your events special with our premium equipment and accessories.</p>
+                    </div>
+                    <img class="cta-img" src="images/malodacimage4.png" width="577" height="433" loading="lazy" alt="Red chafing dish">
+                    <a class="btn btn-primary" href="contact.html?product=Red%20chafing%20dish">Shop now <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h2>Malodac Ventures</h2>
+                    <p>Your satisfaction, our priority.</p>
+                </div>
+
+                <div class="social">
+                    <a href="https://wa.me/2348023053256" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a> <!-- TODO: add your Instagram URL -->
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a>   <!-- TODO: add your Facebook URL -->
+                    <a href="https://www.tiktok.com/@malodac.catering" target="_blank" rel="noopener" aria-label="TikTok"><i class="fa-brands fa-tiktok" aria-hidden="true"></i></a>
+                </div>
+
+                <nav class="footer-links" aria-label="Footer navigation">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="index.html#categories">Products</a>
+                    <a href="services.html">Services</a>
+                    <a href="gallery.html">Gallery</a>
+                    <a href="contact.html">Contact</a>
+                </nav>
+            </div>
+            <p class="copyright">&copy; <span data-year>2026</span> Malodac Ventures. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
