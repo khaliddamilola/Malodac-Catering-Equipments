@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Our Products | Malodac Ventures</title>
+    <link rel="shortcut icon" href="images/malodaclogo.png" type="image/x-icon">
+    <meta name="description" content="Browse and buy catering equipment from Malodac Ventures: chafing dishes, dinner sets, dispensers and serving pieces. Add items to your cart and order in minutes.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+
+    <script>document.documentElement.classList.add('js');</script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="preloader" id="preloader" aria-hidden="true">
+        <div class="preloader-ring">
+            <img class="preloader-logo" src="images/malodaclogo.png" alt="">
+        </div>
+    </div>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <img src="images/malodaclogo.png" alt="">
+            <a href="index.html" class="logo">Malodac Ventures</a>
+
+            <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="nav" id="site-nav" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="products.html">Products</a>
+                <a href="services.html">Services</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="contact.html">Contact</a>
+                <button class="icon-btn cart-btn" type="button" data-open-cart aria-label="View cart">
+                    <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+                    <span class="cart-count" data-cart-count hidden>0</span>
+                </button>
+                <button class="btn btn-primary btn-sm" type="button" data-open-account>Sign Up</button>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <section class="page-banner banner-products">
+            <div class="container">
+                <h1>Shop our products</h1>
+                <nav class="breadcrumb" aria-label="Breadcrumb">
+                    <a href="index.html">Home</a> &gt; <span aria-current="page">Products</span>
+                </nav>
+            </div>
+        </section>
+
+        <!-- SHOP -->
+        <section class="section">
+            <div class="container">
+                <div class="section-head" data-reveal>
+                    <h2>All our equipment, ready to order</h2>
+                    <p>Filter by category, set your quantity, and add items straight to your cart.</p>
+                </div>
+
+                <!-- Filter buttons: data-filter must match a data-category value on the product cards below -->
+                <div class="filters" role="group" aria-label="Filter products by category" data-reveal>
+                    <button class="filter-btn" type="button" data-filter="all" aria-pressed="true">All</button>
+                    <button class="filter-btn" type="button" data-filter="chafing" aria-pressed="false">Chafing dishes</button>
+                    <button class="filter-btn" type="button" data-filter="dinnerware" aria-pressed="false">Dinnerware</button>
+                    <button class="filter-btn" type="button" data-filter="serving" aria-pressed="false">Serving pieces</button>
+                    <button class="filter-btn" type="button" data-filter="dispensers" aria-pressed="false">Dispensers</button>
+                    <button class="filter-btn" type="button" data-filter="coolers" aria-pressed="false">Coolers</button>
+                    <button class="filter-btn" type="button" data-filter="icingbucket" aria-pressed="false">Icing Bucket</button>
+                </div>
+
+                <p class="results-count" id="product-count" role="status" aria-live="polite">Showing 9 of 9 products</p>
+
+                <ul class="product-grid">
+                    <li class="product-card" data-category="dinnerware">
+                        <div class="product-thumb">
+                            <img src="images/malodacimage1.png" width="638" height="391" loading="lazy" alt="Grey ribbed dinner set with a bowl and two plates">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-name">Grey Ribbed Dinner Set</h3>
+                            <p class="product-price">&#8358;30,000</p>
+                            <div class="qty-stepper">
+                                <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                                <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
+                                <button class="qty-btn" type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                            </div>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" type="button"
+                                    data-add-to-cart
+                                    data-id="dinnerware-grey-ribbed"
+                                    data-name="Grey Ribbed Dinner Set"
+                                    data-price="30000"
+                                    data-image="images/malodacimage1.png">
+                                Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="product-card" data-category="dispensers">
+                        <div class="product-thumb">
+                            <img src="images/malodacimage2.png" width="335" height="746" loading="lazy" alt="Double drink dispenser filled with red and orange juice">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-name">Double Drink Dispenser</h3>
+                            <p class="product-price">&#8358;95,000</p>
+                            <div class="qty-stepper">
+                                <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                                <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
+                                <button class="qty-btn" type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                            </div>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" type="button"
+                                    data-add-to-cart
+                                    data-id="dispenser-double-drink"
+                                    data-name="Double Drink Dispenser"
+                                    data-price="95000"
+                                    data-image="images/malodacimage2.png">
+                                Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="product-card" data-category="chafing">
+                        <div class="product-thumb">
+                            <img src="images/malodacimage3.png" width="510" height="490" loading="lazy" alt="Gold round rolltop chafing dish">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-name">Rolltop Chafing Dish (Gold)</h3>
+                            <p class="product-price">&#8358;130,000</p>
+                            <div class="qty-stepper">
+                                <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                                <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
+                                <button class="qty-btn" type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                            </div>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" type="button"
+                                    data-add-to-cart
+                                    data-id="chafing-rolltop-gold"
+                                    data-name="Rolltop Chafing Dish (Gold)"
+                                    data-price="130000"
+                                    data-image="images/malodacimage3.png">
+                                Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="product-card" data-category="chafing">
+                        <div class="product-thumb">
+                            <img src="images/malodacimage4.png" width="577" height="433" loading="lazy" alt="Red rectangular chafing dish with a glass lid">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-name">Red Rectangular Chafing Dish</h3>
+                            <p class="product-price">&#8358;75,000</p>
+                            <div class="qty-stepper">
+                                <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                                <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
+                                <button class="qty-btn" type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                            </div>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" type="button"
+                                    data-add-to-cart
+                                    data-id="chafing-red-rectangular"
+                                    data-name="Red Rectangular Chafing Dish"
+                                    data-price="75000"
+                                    data-image="images/malodacimage4.png">
+                                Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="product-card" data-category="serving">
+                        <div class="product-thumb">
+                            <img src="images/malodacimage5.png" width="387" height="645" loading="lazy" alt="White serving dome with gold trim on a gold stand">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-name">Serving Dome On Stand</h3>
+                            <p class="product-price">&#8358;60,000</p>
+                            <div class="qty-stepper">
+                                <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                                <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
+                                <button class="qty-btn" type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                            </div>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" type="button"
+                                    data-add-to-cart
+                                    data-id="serving-dome-stand"
+                                    data-name="Serving Dome On Stand"
+                                    data-price="60000"
+                                    data-image="images/malodacimage5.png">
+                                Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="product-card" data-category="dinnerware">
+                        <div class="product-thumb">
+                            <img src="images/malodacimage6.png" width="666" height="375" loading="lazy" alt="Stack of white serving plates with gold rims">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-name">Gold-Rim Serving Plates (Set of 3)</h3>
+                            <p class="product-price">&#8358;35,000</p>
+                            <div class="qty-stepper">
+                                <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                                <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
+                                <button class="qty-btn" type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                            </div>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" type="button"
+                                    data-add-to-cart
+                                    data-id="dinnerware-goldrim-plates"
+                                    data-name="Gold-Rim Serving Plates (Set of 3)"
+                                    data-price="35000"
+                                    data-image="images/malodacimage6.png">
+                                Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="product-card is-photo" data-category="serving">
+                        <div class="product-thumb">
+                            <img src="images/bg2.png" width="1070" height="706" loading="lazy" alt="Three rose gold and gold food warmers stacked together">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-name">Rose Gold Food Warmer Set</h3>
+                            <p class="product-price">&#8358;150,000</p>
+                            <div class="qty-stepper">
+                                <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                                <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
+                                <button class="qty-btn" type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                            </div>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" type="button"
+                                    data-add-to-cart
+                                    data-id="serving-rosegold-warmer-set"
+                                    data-name="Rose Gold Food Warmer Set"
+                                    data-price="150000"
+                                    data-image="images/bg2.png">
+                                Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="product-card is-photo" data-category="chafing">
+                        <div class="product-thumb">
+                            <img src="images/fornow.png" width="356" height="342" loading="lazy" alt="Gold round chafing dish with a smoked glass lid on a table">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-name">Gold Round Chafing Dish</h3>
+                            <p class="product-price">&#8358;85,000</p>
+                            <div class="qty-stepper">
+                                <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                                <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
+                                <button class="qty-btn" type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                            </div>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" type="button"
+                                    data-add-to-cart
+                                    data-id="chafing-gold-round"
+                                    data-name="Gold Round Chafing Dish"
+                                    data-price="85000"
+                                    data-image="images/fornow.png">
+                                Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="product-card" data-category="serving">
+                        <div class="product-thumb">
+                            <img src="images/background.png" width="608" height="410" loading="lazy" alt="Collection of coolers, gold serving bowls, plates and cutlery">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-name">Catering Essentials Collection</h3>
+                            <p class="product-price">&#8358;200,000</p>
+                            <div class="qty-stepper">
+                                <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                                <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
+                                <button class="qty-btn" type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                            </div>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" type="button"
+                                    data-add-to-cart
+                                    data-id="serving-essentials-collection"
+                                    data-name="Catering Essentials Collection"
+                                    data-price="200000"
+                                    data-image="images/background.png">
+                                Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="product-card" data-category="chafing">
+                        <div class="product-thumb">
+                            <img src="images/malodacimage9.png" width="608" height="410" loading="lazy" alt="silver round chaffen dish ">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-name">Round Silver Chaffen Dish</h3>
+                            <p class="product-price">&#8358;120,000</p>
+                            <div class="qty-stepper">
+                                <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                                <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
+                                <button class="qty-btn" type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                            </div>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" type="button"
+                                    data-add-to-cart
+                                    data-id="round-silver-chaffen"
+                                    data-name="Round Silver Chaffen Dish"
+                                    data-price="120000"
+                                    data-image="images/malodacimage9.png">
+                                Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="product-card" data-category="chafing">
+                        <div class="product-thumb">
+                            <img src="images/malodacimage10.png" width="608" height="410" loading="lazy" alt="gold luxury chaffen dish ">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-name">Gold Luxury Chaffen Dish</h3>
+                            <p class="product-price">&#8358;150,000</p>
+                            <div class="qty-stepper">
+                                <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                                <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
+                                <button class="qty-btn" type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                            </div>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" type="button"
+                                    data-add-to-cart
+                                    data-id="luxury-gold-chaffen-round"
+                                    data-name="Gold Luxury Chaffen Dish"
+                                    data-price="150000"
+                                    data-image="images/malodacimage10.png">
+                                Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="product-card" data-category="coolers">
+                        <div class="product-thumb">
+                            <img src="images/malodacimage11.png" width="608" height="410" loading="lazy" alt="red-fridge-cooler">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-name">Red Fridge Cooler</h3>
+                            <p class="product-price">&#8358;350,000</p>
+                            <div class="qty-stepper">
+                                <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                                <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
+                                <button class="qty-btn" type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                            </div>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" type="button"
+                                    data-add-to-cart
+                                    data-id="red-fridge-cooler"
+                                    data-name="Red Fridge Cooler"
+                                    data-price="350000"
+                                    data-image="images/malodacimage11.png">
+                                Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="product-card" data-category="chafing">
+                        <div class="product-thumb">
+                            <img src="images/malodacimage12.png" width="608" height="410" loading="lazy" alt="two-portion-chaffen-dish">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-name">Two Portion Chaffen Dish</h3>
+                            <p class="product-price">&#8358;200,000</p>
+                            <div class="qty-stepper">
+                                <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                                <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
+                                <button class="qty-btn" type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                            </div>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" type="button"
+                                    data-add-to-cart
+                                    data-id="two-portion-chaffen-dish"
+                                    data-name="Two Portion Chaffen Dish"
+                                    data-price="200000"
+                                    data-image="images/malodacimage12.png">
+                                Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="product-card" data-category="icingbucket">
+                        <div class="product-thumb">
+                            <img src="images/malodacimage13.png" width="608" height="410" loading="lazy" alt="silver-icing-bucket">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-name">Silver Icing Bowl</h3>
+                            <p class="product-price">&#8358;50,000</p>
+                            <div class="qty-stepper">
+                                <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                                <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
+                                <button class="qty-btn" type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                            </div>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" type="button"
+                                    data-add-to-cart
+                                    data-id="silver-icing-bucket"
+                                    data-name="Silver Icing Bowl"
+                                    data-price="50000"
+                                    data-image="images/malodacimage13.png">
+                                Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="product-card" data-category="icingbucket">
+                        <div class="product-thumb">
+                            <img src="images/malodacimage15.png" width="608" height="410" loading="lazy" alt="gold-icing-bucket">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-name">Gold Icing Bowl</h3>
+                            <p class="product-price">&#8358;60,000</p>
+                            <div class="qty-stepper">
+                                <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                                <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
+                                <button class="qty-btn" type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                            </div>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" type="button"
+                                    data-add-to-cart
+                                    data-id="gold-icing-bucket"
+                                    data-name="Gold Icing Bowl"
+                                    data-price="60000"
+                                    data-image="images/malodacimage15.png">
+                                Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </li>
+
+                    <li class="product-card" data-category="icingbucket">
+                        <div class="product-thumb">
+                            <img src="images/malodacimage14.png" width="608" height="410" loading="lazy" alt="black-icing-bucket">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-name">Black Icing Bowl</h3>
+                            <p class="product-price">&#8358;70,000</p>
+                            <div class="qty-stepper">
+                                <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                                <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
+                                <button class="qty-btn" type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                            </div>
+                            <button class="btn btn-primary btn-sm add-to-cart-btn" type="button"
+                                    data-add-to-cart
+                                    data-id="black-icing-bucket"
+                                    data-name="Black Icing Bowl"
+                                    data-price="70000"
+                                    data-image="images/malodacimage14.png">
+                                Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </li>
+
+
+                </ul>
+            </div>
+        </section>
+
+        <!-- CALL TO ACTION -->
+        <section class="section" style="padding-top: 0;">
+            <div class="container">
+                <div class="cta cta-band" data-reveal>
+                    <div class="cta-line" aria-hidden="true"></div>
+                    <div>
+                        <h2>Can't find what you need?</h2>
+                        <p>Tell us about your event or business and we'll help you find the right equipment.</p>
+                    </div>
+                    <a class="btn btn-primary" href="contact.html">Contact us <i class="fa-solid fa-arrow-right-long" aria-hidden="true"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h2>Malodac Ventures</h2>
+                    <p>Your satisfaction, our priority.</p>
+                </div>
+
+                <div class="social">
+                    <a href="https://wa.me/2348023053256" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a> <!-- TODO: add your Instagram URL -->
+                    <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a>   <!-- TODO: add your Facebook URL -->
+                    <a href="https://www.tiktok.com/@malodac.catering" target="_blank" rel="noopener" aria-label="TikTok"><i class="fa-brands fa-tiktok" aria-hidden="true"></i></a>
+                </div>
+
+                <nav class="footer-links" aria-label="Footer navigation">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="products.html">Products</a>
+                    <a href="services.html">Services</a>
+                    <a href="gallery.html">Gallery</a>
+                    <a href="contact.html">Contact</a>
+                </nav>
+            </div>
+            <p class="copyright">&copy; <span data-year>2026</span> Malodac Ventures. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
