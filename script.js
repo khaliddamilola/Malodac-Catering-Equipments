@@ -16,11 +16,7 @@
    8. Services page: FAQ accordion
    9. Gallery page: category filter + lightbox
   10. Cart: shared storage helpers used by the products page and the drawer
-<<<<<<< HEAD
-  11. Products page: category filter + quantity steppers + add to cart
-=======
   11. Products page: loads products from Firebase, filter + steppers + add to cart
->>>>>>> a2bf494 (added products)
   12. Cart drawer: view / update / remove items, checkout via WhatsApp
    ========================================================================== */
 
@@ -116,7 +112,7 @@
             nav.classList.toggle('is-open', open);
             document.body.classList.toggle('nav-open', open);
         }
- 
+
         const isOpen = () => toggle.getAttribute('aria-expanded') === 'true';
 
         toggle.addEventListener('click', () => setOpen(!isOpen()));
@@ -817,8 +813,6 @@
     /* 11. PRODUCTS PAGE ------------------------------------------------------
        Category filter (same pattern as the Gallery page's filter buttons),
        a quantity stepper on each card, and an "Add to cart" button. ------- */
-<<<<<<< HEAD
-=======
     // Builds one product card from a product saved in Firebase.
     // (textContent / properties are used instead of innerHTML for product data.)
     function buildProductCard(product) {
@@ -856,17 +850,10 @@
         return li;
     }
 
->>>>>>> a2bf494 (added products)
     function initProducts() {
         const grid = $('.product-grid');
         if (!grid) return;
 
-<<<<<<< HEAD
-        const cards = $$('.product-card', grid);
-        const filterButtons = $$('.filter-btn');
-        const countEl = $('#product-count');
-
-=======
         const countEl = $('#product-count');
 
         // Build the filter buttons from the category list in firebase-config.js
@@ -897,7 +884,6 @@
             if (countEl) countEl.textContent = '';
         }
 
->>>>>>> a2bf494 (added products)
         function applyFilter(category) {
             cards.forEach((card) => {
                 card.hidden = !(category === 'all' || card.dataset.category === category);
@@ -910,13 +896,6 @@
 
         filterButtons.forEach((btn) => btn.addEventListener('click', () => applyFilter(btn.dataset.filter)));
 
-<<<<<<< HEAD
-        // products.html#chafing opens with that filter already selected
-        const fromHash = window.location.hash.slice(1);
-        applyFilter(filterButtons.some((btn) => btn.dataset.filter === fromHash) ? fromHash : 'all');
-
-        // One delegated listener handles every card's stepper + Add to cart button
-=======
         function renderProducts(products) {
             grid.setAttribute('aria-busy', 'false');
             grid.textContent = '';
@@ -952,7 +931,6 @@
 
         // One delegated listener handles every card's stepper + Add to cart button
         // (works for cards that are created after the page loads)
->>>>>>> a2bf494 (added products)
         grid.addEventListener('click', (e) => {
             const decreaseBtn = e.target.closest('[data-qty-decrease]');
             const increaseBtn = e.target.closest('[data-qty-increase]');
