@@ -16,7 +16,11 @@
    8. Services page: FAQ accordion
    9. Gallery page: category filter + lightbox
   10. Cart: shared storage helpers used by the products page and the drawer
+<<<<<<< HEAD
   11. Products page: category filter + quantity steppers + add to cart
+=======
+  11. Products page: loads products from Firebase, filter + steppers + add to cart
+>>>>>>> a2bf494 (added products)
   12. Cart drawer: view / update / remove items, checkout via WhatsApp
    ========================================================================== */
 
@@ -813,14 +817,87 @@
     /* 11. PRODUCTS PAGE ------------------------------------------------------
        Category filter (same pattern as the Gallery page's filter buttons),
        a quantity stepper on each card, and an "Add to cart" button. ------- */
+<<<<<<< HEAD
+=======
+    // Builds one product card from a product saved in Firebase.
+    // (textContent / properties are used instead of innerHTML for product data.)
+    function buildProductCard(product) {
+        const li = document.createElement('li');
+        li.className = 'product-card' + (product.isPhoto ? ' is-photo' : '');
+        li.dataset.category = product.category || '';
+
+        li.innerHTML = `
+            <div class="product-thumb"><img loading="lazy" alt=""></div>
+            <div class="product-body">
+                <h3 class="product-name"></h3>
+                <p class="product-price"></p>
+                <div class="qty-stepper">
+                    <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
+                    <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
+                    <button class="qty-btn" type="button" data-qty-increase aria-label="Increase quantity">+</button>
+                </div>
+                <button class="btn btn-primary btn-sm add-to-cart-btn" type="button" data-add-to-cart>
+                    Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
+                </button>
+            </div>`;
+
+        const img = $('img', li);
+        img.src = product.image;
+        img.alt = product.name;
+        $('.product-name', li).textContent = product.name;
+        $('.product-price', li).textContent = formatNaira(product.price);
+
+        const addBtn = $('[data-add-to-cart]', li);
+        addBtn.dataset.id = product.id;
+        addBtn.dataset.name = product.name;
+        addBtn.dataset.price = String(product.price);
+        // A small thumbnail keeps the saved cart light when the full picture is stored inside Firebase
+        addBtn.dataset.image = product.thumb || product.image;
+        return li;
+    }
+
+>>>>>>> a2bf494 (added products)
     function initProducts() {
         const grid = $('.product-grid');
         if (!grid) return;
 
+<<<<<<< HEAD
         const cards = $$('.product-card', grid);
         const filterButtons = $$('.filter-btn');
         const countEl = $('#product-count');
 
+=======
+        const countEl = $('#product-count');
+
+        // Build the filter buttons from the category list in firebase-config.js
+        const filtersBox = $('.filters');
+        if (filtersBox && Array.isArray(window.MALODAC_CATEGORIES)) {
+            filtersBox.textContent = '';
+            [{ key: 'all', label: 'All' }, ...window.MALODAC_CATEGORIES].forEach((cat) => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.type = 'button';
+                btn.dataset.filter = cat.key;
+                btn.setAttribute('aria-pressed', 'false');
+                btn.textContent = cat.label;
+                filtersBox.append(btn);
+            });
+        }
+
+        const filterButtons = $$('.filter-btn');
+        let cards = [];
+
+        function showMessage(text) {
+            grid.setAttribute('aria-busy', 'false');
+            grid.textContent = '';
+            const li = document.createElement('li');
+            li.textContent = text;
+            li.style.cssText = 'grid-column: 1 / -1; padding: 2.5rem 1rem; text-align: center; color: var(--muted);';
+            grid.append(li);
+            if (countEl) countEl.textContent = '';
+        }
+
+>>>>>>> a2bf494 (added products)
         function applyFilter(category) {
             cards.forEach((card) => {
                 card.hidden = !(category === 'all' || card.dataset.category === category);
@@ -833,11 +910,49 @@
 
         filterButtons.forEach((btn) => btn.addEventListener('click', () => applyFilter(btn.dataset.filter)));
 
+<<<<<<< HEAD
         // products.html#chafing opens with that filter already selected
         const fromHash = window.location.hash.slice(1);
         applyFilter(filterButtons.some((btn) => btn.dataset.filter === fromHash) ? fromHash : 'all');
 
         // One delegated listener handles every card's stepper + Add to cart button
+=======
+        function renderProducts(products) {
+            grid.setAttribute('aria-busy', 'false');
+            grid.textContent = '';
+            if (!products.length) {
+                showMessage('No products to show yet. Please check back soon or contact us.');
+                return;
+            }
+            products.forEach((p) => grid.append(buildProductCard(p)));
+            cards = $$('.product-card', grid);
+
+            // products.html#chafing opens with that filter already selected
+            const fromHash = window.location.hash.slice(1);
+            applyFilter(filterButtons.some((btn) => btn.dataset.filter === fromHash) ? fromHash : 'all');
+        }
+
+        // Load the products from Firebase (only the ones switched on in the admin dashboard)
+        if (!window.malodacDb) {
+            showMessage('Products could not be loaded right now. Please contact us on WhatsApp to place an order.');
+        } else {
+            window.malodacDb.collection('products').where('active', '==', true).get()
+                .then((snapshot) => {
+                    const products = snapshot.docs
+                        .map((doc) => ({ id: doc.id, ...doc.data() }))
+                        .filter((p) => p.name && Number.isFinite(p.price) && p.image)
+                        // newest first
+                        .sort((a, b) => ((b.createdAt && b.createdAt.toMillis()) || 0) - ((a.createdAt && a.createdAt.toMillis()) || 0));
+                    renderProducts(products);
+                })
+                .catch(() => {
+                    showMessage('Products could not be loaded right now. Please refresh, or contact us on WhatsApp to place an order.');
+                });
+        }
+
+        // One delegated listener handles every card's stepper + Add to cart button
+        // (works for cards that are created after the page loads)
+>>>>>>> a2bf494 (added products)
         grid.addEventListener('click', (e) => {
             const decreaseBtn = e.target.closest('[data-qty-decrease]');
             const increaseBtn = e.target.closest('[data-qty-increase]');

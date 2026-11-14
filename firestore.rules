@@ -1,0 +1,31 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Only YOUR admin account. Replace the text below with your admin user's UID
+    // (Firebase console > Authentication > Users > copy the "User UID").
+    function isAdmin() {
+      return request.auth != null
+          && request.auth.uid == 'PASTE_ADMIN_UID_HERE';
+    }
+
+    match /products/{productId} {
+      // Visitors can only read products that are switched on (active == true).
+      // The admin can read everything, including hidden products.
+      allow read: if resource.data.active == true || isAdmin();
+
+      // Only the admin can add, edit or delete products.
+      allow create, update: if isAdmin()
+                            && request.resource.data.name is string
+                            && request.resource.data.price is number
+                            && request.resource.data.price > 0;
+      allow delete: if isAdmin();
+    }
+
+    // Everything else is locked.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -14,6 +14,13 @@
     <link rel="stylesheet" href="style.css">
 
     <script>document.documentElement.classList.add('js');</script>
+<<<<<<< HEAD
+=======
+    <!-- Firebase (loads your products). Order matters: Firebase, then config, then script.js -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js" defer></script>
+    <script src="firebase-config.js" defer></script>
+>>>>>>> a2bf494 (added products)
     <script src="script.js" defer></script>
 </head>
 <body>
@@ -67,7 +74,11 @@
                     <p>Filter by category, set your quantity, and add items straight to your cart.</p>
                 </div>
 
+<<<<<<< HEAD
                 <!-- Filter buttons: data-filter must match a data-category value on the product cards below -->
+=======
+                <!-- Filter buttons: data-filter must match a data-category value of the products (see firebase-config.js) -->
+>>>>>>> a2bf494 (added products)
                 <div class="filters" role="group" aria-label="Filter products by category" data-reveal>
                     <button class="filter-btn" type="button" data-filter="all" aria-pressed="true">All</button>
                     <button class="filter-btn" type="button" data-filter="chafing" aria-pressed="false">Chafing dishes</button>
@@ -78,6 +89,7 @@
                     <button class="filter-btn" type="button" data-filter="icingbucket" aria-pressed="false">Icing Bucket</button>
                 </div>
 
+<<<<<<< HEAD
                 <p class="results-count" id="product-count" role="status" aria-live="polite">Showing 9 of 9 products</p>
 
                 <ul class="product-grid">
@@ -450,6 +462,14 @@
                     </li>
 
 
+=======
+                <p class="results-count" id="product-count" role="status" aria-live="polite">Loading products&hellip;</p>
+
+                <!-- Product cards are created by script.js from the products saved in Firebase.
+                     Add, edit or remove products in admin.html - no HTML editing needed. -->
+                <ul class="product-grid" id="product-grid" aria-busy="true">
+                    <li style="grid-column: 1 / -1; padding: 2.5rem 1rem; text-align: center; color: var(--muted);">Loading products&hellip;</li>
+>>>>>>> a2bf494 (added products)
                 </ul>
             </div>
         </section>

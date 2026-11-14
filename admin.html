@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Dashboard | Malodac Ventures</title>
+    <link rel="shortcut icon" href="images/malodaclogo.png" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css"
+        integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+
+    <!-- Firebase (compat build, works with normal scripts) -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js" defer></script>
+    <script src="firebase-config.js" defer></script>
+    <script src="admin.js" defer></script>
+</head>
+
+<body class="admin-body">
+
+    <header class="admin-bar">
+        <div class="admin-bar-inner">
+            <a class="admin-brand" href="admin.html">
+                <img src="images/malodaclogo.png" alt="" width="36" height="36">
+                <span>Malodac Admin</span>
+            </a>
+            <div class="admin-bar-actions">
+                <span class="admin-email" id="admin-email"></span>
+                <a class="btn btn-outline btn-sm" href="products.html" target="_blank" rel="noopener">View shop</a>
+                <button class="btn btn-primary btn-sm" type="button" id="logout-btn" hidden>Log out</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-main">
+
+        <!-- LOGIN -->
+        <section class="admin-card login-card" id="login-view">
+            <h1>Admin login</h1>
+            <p class="admin-muted">Sign in with your admin email and password.</p>
+
+            <form id="login-form" novalidate>
+                <div class="field">
+                    <label for="login-email">Email address</label>
+                    <input type="email" id="login-email" autocomplete="email" placeholder="you@email.com" required>
+                </div>
+                <div class="field">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" autocomplete="current-password"
+                        placeholder="Your password" required>
+                </div>
+                <button class="btn btn-primary" type="submit" id="login-submit">Log in</button>
+                <div class="form-status" id="login-status" role="status" aria-live="polite"></div>
+                <button class="link-btn" type="button" id="reset-btn">Forgot your password?</button>
+            </form>
+        </section>
+
+        <!-- DASHBOARD (shown after login) -->
+        <div id="dashboard-view" hidden>
+            <div class="form-status" id="dash-status" role="status" aria-live="polite"></div>
+
+            <!-- ADD / EDIT FORM -->
+            <section class="admin-card">
+                <h2 id="form-title">Add a product</h2>
+
+                <form id="product-form" novalidate>
+                    <div class="admin-form-grid">
+                        <div class="admin-form-fields">
+                            <div class="field">
+                                <label for="p-name">Product name</label>
+                                <input type="text" id="p-name" maxlength="100"
+                                    placeholder="e.g. Gold Round Chafing Dish" required>
+                                <p class="error-msg" id="p-name-error"></p>
+                            </div>
+
+                            <div class="field">
+                                <label for="p-price">Price (&#8358;)</label>
+                                <input type="number" id="p-price" min="1" step="1" inputmode="numeric"
+                                    placeholder="e.g. 85000" required>
+                                <p class="error-msg" id="p-price-error"></p>
+                            </div>
+
+                            <div class="field">
+                                <label for="p-category">Category</label>
+                                <select id="p-category" required></select>
+                                <p class="error-msg" id="p-category-error"></p>
+                            </div>
+
+                            <div class="field">
+                                <label for="p-file">Product picture</label>
+                                <input type="file" id="p-file" accept="image/*">
+                                <p class="admin-hint">Choose a photo from your phone or computer. It is resized
+                                    automatically.</p>
+                                <p class="error-msg" id="p-image-error"></p>
+                            </div>
+
+                            <div class="field">
+                                <label for="p-url">Or use an image link / file path <small>(optional)</small></label>
+                                <input type="text" id="p-url" placeholder="images/malodacimage1.png or https://...">
+                            </div>
+
+                            <label class="check">
+                                <input type="checkbox" id="p-photo">
+                                <span>This is a real photo (fill the whole picture box instead of fitting inside
+                                    it)</span>
+                            </label>
+
+                            <label class="check">
+                                <input type="checkbox" id="p-active" checked>
+                                <span>Show this product on the website</span>
+                            </label>
+                        </div>
+
+                        <div class="admin-preview">
+                            <p class="admin-preview-label">Preview</p>
+                            <div class="admin-preview-box">
+                                <img id="img-preview" alt="" hidden>
+                                <span id="img-placeholder">No picture yet</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-actions">
+                        <button class="btn btn-primary" type="submit" id="save-btn">Save product</button>
+                        <button class="btn btn-outline" type="button" id="cancel-btn" hidden>Cancel editing</button>
+                    </div>
+                    <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+                </form>
+            </section>
+
+            <!-- PRODUCT LIST -->
+            <section class="admin-card">
+                <h2>Your products (<span id="product-total">0</span>)</h2>
+
+                <div class="admin-empty" id="empty-state" hidden>
+                    <p>No products yet. You can add one above, or bring in the products that are currently written in
+                        your products.html.</p>
+                    <button class="btn btn-outline btn-sm" type="button" id="import-btn">Import my original
+                        products</button>
+                </div>
+
+                <div class="table-wrap">
+                    <table class="admin-table" id="product-table" hidden>
+                        <thead>
+                            <tr>
+                                <th scope="col">Picture</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Status</th>
+                                <th scope="col"><span class="visually-hidden">Actions</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-rows"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+
+</html>
