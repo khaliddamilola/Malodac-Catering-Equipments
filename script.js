@@ -16,7 +16,8 @@
    8. Services page: FAQ accordion
    9. Gallery page: category filter + lightbox
   10. Cart: shared storage helpers used by the products page and the drawer
-  11. Products page: loads products from Firebase, filter + steppers + add to cart
+  11. Store: category menus, home banner slider + product shelves, shop page
+      (search, category, price, sort) with products loaded from Firebase
   12. Cart drawer: view / update / remove items, checkout via WhatsApp
    ========================================================================== */
 
@@ -112,7 +113,7 @@
             nav.classList.toggle('is-open', open);
             document.body.classList.toggle('nav-open', open);
         }
-
+ 
         const isOpen = () => toggle.getAttribute('aria-expanded') === 'true';
 
         toggle.addEventListener('click', () => setOpen(!isOpen()));
@@ -379,7 +380,8 @@
     function updateAccountUI() {
         const user = getCurrentUser();
         $$('[data-open-account]').forEach((btn) => {
-            btn.textContent = user ? `Hi, ${user.name.split(' ')[0]}` : 'Sign Up';
+            const label = $('[data-account-label]', btn) || btn;
+            label.textContent = user ? `Hi, ${user.name.split(' ')[0]}` : 'Sign Up';
         });
     }
 
@@ -813,8 +815,34 @@
     /* 11. PRODUCTS PAGE ------------------------------------------------------
        Category filter (same pattern as the Gallery page's filter buttons),
        a quantity stepper on each card, and an "Add to cart" button. ------- */
-    // Builds one product card from a product saved in Firebase.
-    // (textContent / properties are used instead of innerHTML for product data.)
+    /* ---- Shared product helpers (home page shelves + shop page) ----------- */
+    const CATEGORY_ICONS = {
+        chafing: 'fa-fire-burner', dinnerware: 'fa-utensils', serving: 'fa-bell-concierge',
+        dispensers: 'fa-glass-water', coolers: 'fa-snowflake', icingbucket: 'fa-bucket',
+    };
+    const categoryList = () => (Array.isArray(window.MALODAC_CATEGORIES) ? window.MALODAC_CATEGORIES : []);
+    const categoryLabel = (key) => (categoryList().find((c) => c.key === key) || { label: '' }).label;
+    const categoryIcon = (key) => CATEGORY_ICONS[key] || 'fa-tag';
+
+    function discountPercent(p) {
+        return p.oldPrice > p.price ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
+    }
+
+    // Loads the products that are switched on in the admin dashboard (once per page)
+    let productsPromise = null;
+    function loadProducts() {
+        if (productsPromise) return productsPromise;
+        if (!window.malodacDb) return Promise.reject(new Error('Firebase is not connected'));
+        productsPromise = window.malodacDb.collection('products').where('active', '==', true).get()
+            .then((snapshot) => snapshot.docs
+                .map((doc) => ({ id: doc.id, ...doc.data() }))
+                .filter((p) => p.name && Number.isFinite(p.price) && p.image)
+                .sort((a, b) => ((b.createdAt && b.createdAt.toMillis()) || 0) - ((a.createdAt && a.createdAt.toMillis()) || 0)))
+            .catch((err) => { productsPromise = null; throw err; });
+        return productsPromise;
+    }
+
+    // Builds one product card (product data goes in through textContent / properties, never innerHTML)
     function buildProductCard(product) {
         const li = document.createElement('li');
         li.className = 'product-card' + (product.isPhoto ? ' is-photo' : '');
@@ -823,8 +851,9 @@
         li.innerHTML = `
             <div class="product-thumb"><img loading="lazy" alt=""></div>
             <div class="product-body">
+                <p class="product-cat"></p>
                 <h3 class="product-name"></h3>
-                <p class="product-price"></p>
+                <p class="product-price"><span class="price-now"></span></p>
                 <div class="qty-stepper">
                     <button class="qty-btn" type="button" data-qty-decrease aria-label="Decrease quantity">&minus;</button>
                     <input class="qty-input" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity">
@@ -833,13 +862,30 @@
                 <button class="btn btn-primary btn-sm add-to-cart-btn" type="button" data-add-to-cart>
                     Add to cart <i class="fa-solid fa-cart-plus" aria-hidden="true"></i>
                 </button>
+                <a class="wa-order" target="_blank" rel="noopener">
+                    <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Order on WhatsApp
+                </a>
             </div>`;
 
         const img = $('img', li);
         img.src = product.image;
         img.alt = product.name;
+        $('.product-cat', li).textContent = categoryLabel(product.category);
         $('.product-name', li).textContent = product.name;
-        $('.product-price', li).textContent = formatNaira(product.price);
+        $('.price-now', li).textContent = formatNaira(product.price);
+
+        const off = discountPercent(product);
+        if (off > 0) {
+            const old = document.createElement('s');
+            old.className = 'price-old';
+            old.textContent = formatNaira(product.oldPrice);
+            $('.product-price', li).append(old);
+
+            const badge = document.createElement('span');
+            badge.className = 'badge-product badge-off';
+            badge.textContent = `-${off}%`;
+            li.prepend(badge);
+        }
 
         const addBtn = $('[data-add-to-cart]', li);
         addBtn.dataset.id = product.id;
@@ -847,91 +893,15 @@
         addBtn.dataset.price = String(product.price);
         // A small thumbnail keeps the saved cart light when the full picture is stored inside Firebase
         addBtn.dataset.image = product.thumb || product.image;
+
+        const message = `Hello Malodac Ventures, I am interested in "${product.name}" (${formatNaira(product.price)}). Is it available?`;
+        $('.wa-order', li).href = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
         return li;
     }
 
-    function initProducts() {
-        const grid = $('.product-grid');
-        if (!grid) return;
-
-        const countEl = $('#product-count');
-
-        // Build the filter buttons from the category list in firebase-config.js
-        const filtersBox = $('.filters');
-        if (filtersBox && Array.isArray(window.MALODAC_CATEGORIES)) {
-            filtersBox.textContent = '';
-            [{ key: 'all', label: 'All' }, ...window.MALODAC_CATEGORIES].forEach((cat) => {
-                const btn = document.createElement('button');
-                btn.className = 'filter-btn';
-                btn.type = 'button';
-                btn.dataset.filter = cat.key;
-                btn.setAttribute('aria-pressed', 'false');
-                btn.textContent = cat.label;
-                filtersBox.append(btn);
-            });
-        }
-
-        const filterButtons = $$('.filter-btn');
-        let cards = [];
-
-        function showMessage(text) {
-            grid.setAttribute('aria-busy', 'false');
-            grid.textContent = '';
-            const li = document.createElement('li');
-            li.textContent = text;
-            li.style.cssText = 'grid-column: 1 / -1; padding: 2.5rem 1rem; text-align: center; color: var(--muted);';
-            grid.append(li);
-            if (countEl) countEl.textContent = '';
-        }
-
-        function applyFilter(category) {
-            cards.forEach((card) => {
-                card.hidden = !(category === 'all' || card.dataset.category === category);
-            });
-            const visible = cards.filter((card) => !card.hidden);
-
-            filterButtons.forEach((btn) => btn.setAttribute('aria-pressed', String(btn.dataset.filter === category)));
-            if (countEl) countEl.textContent = `Showing ${visible.length} of ${cards.length} products`;
-        }
-
-        filterButtons.forEach((btn) => btn.addEventListener('click', () => applyFilter(btn.dataset.filter)));
-
-        function renderProducts(products) {
-            grid.setAttribute('aria-busy', 'false');
-            grid.textContent = '';
-            if (!products.length) {
-                showMessage('No products to show yet. Please check back soon or contact us.');
-                return;
-            }
-            products.forEach((p) => grid.append(buildProductCard(p)));
-            cards = $$('.product-card', grid);
-
-            // products.html#chafing opens with that filter already selected
-            const fromHash = window.location.hash.slice(1);
-            applyFilter(filterButtons.some((btn) => btn.dataset.filter === fromHash) ? fromHash : 'all');
-        }
-
-        // Load the products from Firebase (only the ones switched on in the admin dashboard)
-        if (!window.malodacDb) {
-            showMessage('Products could not be loaded right now. Please contact us on WhatsApp to place an order.');
-        } else {
-            window.malodacDb.collection('products').where('active', '==', true).get()
-                .then((snapshot) => {
-                    const products = snapshot.docs
-                        .map((doc) => ({ id: doc.id, ...doc.data() }))
-                        .filter((p) => p.name && Number.isFinite(p.price) && p.image)
-                        // newest first
-                        .sort((a, b) => ((b.createdAt && b.createdAt.toMillis()) || 0) - ((a.createdAt && a.createdAt.toMillis()) || 0));
-                    renderProducts(products);
-                })
-                .catch(() => {
-                    showMessage('Products could not be loaded right now. Please refresh, or contact us on WhatsApp to place an order.');
-                });
-        }
-
-        // One delegated listener handles every card's stepper + Add to cart button
-        // (works for cards that are created after the page loads)
-        grid.addEventListener('click', (e) => {
+    // One delegated listener per list handles every card's stepper + Add to cart button
+    function wireProductGrid(container) {
+        container.addEventListener('click', (e) => {
             const decreaseBtn = e.target.closest('[data-qty-decrease]');
             const increaseBtn = e.target.closest('[data-qty-increase]');
             const addBtn = e.target.closest('[data-add-to-cart]');
@@ -968,6 +938,356 @@
                 }, 1300);
             }
         });
+    }
+
+
+    /* 11a. CATEGORY MENUS (built from the list in firebase-config.js) ------- */
+    function initCategoryNav() {
+        const cats = categoryList();
+        if (!cats.length) return;
+
+        const makeIcon = (key) => {
+            const i = document.createElement('i');
+            i.className = `fa-solid ${categoryIcon(key)}`;
+            i.setAttribute('aria-hidden', 'true');
+            return i;
+        };
+
+        const menu = $('[data-category-menu]');
+        if (menu) {
+            menu.textContent = '';
+            cats.forEach((c) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = `products.html#${c.key}`;
+                a.append(makeIcon(c.key), document.createTextNode(c.label));
+                li.append(a);
+                menu.append(li);
+            });
+        }
+
+        const strip = $('[data-category-strip]');
+        if (strip) {
+            strip.textContent = '';
+            cats.forEach((c) => {
+                const a = document.createElement('a');
+                a.className = 'cat-chip';
+                a.href = `products.html#${c.key}`;
+                const circle = document.createElement('span');
+                circle.append(makeIcon(c.key));
+                a.append(circle, document.createTextNode(c.label));
+                strip.append(a);
+            });
+        }
+
+        const footerList = $('[data-footer-categories]');
+        if (footerList) {
+            footerList.textContent = '';
+            [{ key: '', label: 'All products' }, ...cats].forEach((c) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = c.key ? `products.html#${c.key}` : 'products.html';
+                a.textContent = c.label;
+                li.append(a);
+                footerList.append(li);
+            });
+        }
+    }
+
+
+    /* 11b. HOME PAGE BANNER SLIDER ------------------------------------------ */
+    function initSlider() {
+        const slider = $('[data-slider]');
+        if (!slider) return;
+
+        const track = $('.slides', slider);
+        const slides = $$('.slide', slider);
+        const dotsBox = $('.slider-dots', slider);
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let index = 0;
+        let timer = null;
+
+        slides.forEach((_, i) => {
+            const dot = document.createElement('button');
+            dot.type = 'button';
+            dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+            dot.addEventListener('click', () => { go(i); restart(); });
+            dotsBox.append(dot);
+        });
+
+        function go(i) {
+            index = (i + slides.length) % slides.length;
+            track.style.transform = `translateX(-${index * 100}%)`;
+            $$('button', dotsBox).forEach((d, n) => d.setAttribute('aria-current', String(n === index)));
+            slides.forEach((s, n) => { s.inert = n !== index; });   // hidden slides can't be tabbed to
+        }
+
+        const stop = () => { clearInterval(timer); timer = null; };
+        const start = () => { if (!reduceMotion && !timer) timer = setInterval(() => go(index + 1), 5500); };
+        const restart = () => { stop(); start(); };
+
+        $('.slider-prev', slider).addEventListener('click', () => { go(index - 1); restart(); });
+        $('.slider-next', slider).addEventListener('click', () => { go(index + 1); restart(); });
+
+        slider.addEventListener('mouseenter', stop);
+        slider.addEventListener('mouseleave', start);
+        slider.addEventListener('focusin', stop);
+        slider.addEventListener('focusout', start);
+        document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+
+        // Swipe on touch screens
+        let startX = null;
+        slider.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; stop(); }, { passive: true });
+        slider.addEventListener('touchend', (e) => {
+            if (startX !== null) {
+                const dx = e.changedTouches[0].clientX - startX;
+                if (Math.abs(dx) > 50) go(index + (dx < 0 ? 1 : -1));
+            }
+            startX = null;
+            start();
+        });
+
+        go(0);
+        start();
+    }
+
+
+    /* 11c. HOME PAGE PRODUCT SHELVES (latest products, deals) ---------------- */
+    function initHomeProducts() {
+        const lists = $$('[data-home-products]');
+        if (!lists.length) return;
+
+        const note = (list, text) => {
+            list.textContent = '';
+            const li = document.createElement('li');
+            li.className = 'shelf-note';
+            li.textContent = text;
+            list.append(li);
+        };
+
+        loadProducts()
+            .then((products) => {
+                lists.forEach((list) => {
+                    const type = list.dataset.homeProducts;
+                    const shelf = list.closest('.shelf');
+                    const items = (type === 'deals' ? products.filter((p) => discountPercent(p) > 0) : products).slice(0, 10);
+
+                    if (!items.length) {
+                        if (shelf && type === 'deals') shelf.hidden = true;
+                        else note(list, 'New products are coming soon.');
+                        return;
+                    }
+                    list.textContent = '';
+                    items.forEach((p) => list.append(buildProductCard(p)));
+                    wireProductGrid(list);
+                    if (shelf) shelf.hidden = false;
+                });
+            })
+            .catch(() => {
+                lists.forEach((list) => {
+                    if (list.dataset.homeProducts === 'deals') return;
+                    note(list, 'Products could not be loaded right now. Please contact us on WhatsApp.');
+                });
+            });
+    }
+
+
+    /* 11d. SHOP PAGE: search (header search box), category, price, sort ----- */
+    function initProducts() {
+        const grid = $('.product-grid');
+        if (!grid) return;
+
+        const countEl = $('#product-count');
+        const sortEl = $('#sort-select');
+        const searchInput = $('#site-search');
+        const searchForm = $('.header-search');
+        const chip = $('#search-chip');
+        const chipTerm = $('#search-term');
+        const priceForm = $('#price-filter');
+        const minEl = $('#price-min');
+        const maxEl = $('#price-max');
+        const priceDetails = $('#price-details');
+
+        // Build the filter buttons from the category list in firebase-config.js
+        const filtersBox = $('.filters');
+        if (filtersBox && categoryList().length) {
+            filtersBox.textContent = '';
+            [{ key: 'all', label: 'All' }, ...categoryList()].forEach((cat) => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.type = 'button';
+                btn.dataset.filter = cat.key;
+                btn.setAttribute('aria-pressed', 'false');
+                btn.textContent = cat.label;
+                filtersBox.append(btn);
+            });
+        }
+        const filterButtons = $$('.filter-btn');
+        const knownCategory = (key) => filterButtons.some((b) => b.dataset.filter === key);
+
+        const params = new URLSearchParams(window.location.search);
+        const state = { category: 'all', q: (params.get('q') || '').trim(), sort: 'newest', min: null, max: null };
+        const fromHash = window.location.hash.slice(1);
+        if (knownCategory(fromHash)) state.category = fromHash;
+        if (searchInput) searchInput.value = state.q;
+        if (priceDetails && window.matchMedia('(min-width: 1024px)').matches) priceDetails.open = true;
+
+        let all = [];
+
+        function matches(p) {
+            if (state.category !== 'all' && p.category !== state.category) return false;
+            if (state.q) {
+                const hay = `${p.name} ${categoryLabel(p.category)}`.toLowerCase();
+                if (!state.q.toLowerCase().split(/\s+/).every((word) => hay.includes(word))) return false;
+            }
+            if (state.min !== null && p.price < state.min) return false;
+            if (state.max !== null && p.price > state.max) return false;
+            return true;
+        }
+
+        const sorters = {
+            'price-asc': (a, b) => a.price - b.price,
+            'price-desc': (a, b) => b.price - a.price,
+            name: (a, b) => a.name.localeCompare(b.name),
+        };
+
+        function syncUrl() {
+            const p = new URLSearchParams();
+            if (state.q) p.set('q', state.q);
+            const url = window.location.pathname + (p.toString() ? `?${p}` : '') + (state.category !== 'all' ? `#${state.category}` : '');
+            window.history.replaceState(null, '', url);
+        }
+
+        function showMessage(text, withReset) {
+            grid.setAttribute('aria-busy', 'false');
+            grid.textContent = '';
+            const li = document.createElement('li');
+            li.className = 'empty-state';
+            const p = document.createElement('p');
+            p.textContent = text;
+            li.append(p);
+            if (withReset) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'btn btn-outline btn-sm';
+                btn.textContent = 'Clear all filters';
+                btn.addEventListener('click', resetFilters);
+                li.append(btn);
+            }
+            grid.append(li);
+        }
+
+        function render() {
+            filterButtons.forEach((btn) => btn.setAttribute('aria-pressed', String(btn.dataset.filter === state.category)));
+            if (chip) {
+                chip.hidden = !state.q;
+                if (chipTerm) chipTerm.textContent = state.q;
+            }
+
+            const list = all.filter(matches);
+            if (state.sort !== 'newest' && sorters[state.sort]) list.sort(sorters[state.sort]);
+
+            if (countEl) countEl.textContent = `Showing ${list.length} of ${all.length} products`;
+            if (!list.length) {
+                showMessage('No products match your search or filters.', true);
+                return;
+            }
+            grid.setAttribute('aria-busy', 'false');
+            grid.textContent = '';
+            list.forEach((p) => grid.append(buildProductCard(p)));
+        }
+
+        function resetFilters() {
+            state.category = 'all';
+            state.q = '';
+            state.min = null;
+            state.max = null;
+            if (searchInput) searchInput.value = '';
+            if (minEl) minEl.value = '';
+            if (maxEl) maxEl.value = '';
+            render();
+            syncUrl();
+        }
+
+        filterButtons.forEach((btn) => btn.addEventListener('click', () => {
+            state.category = btn.dataset.filter;
+            render();
+            syncUrl();
+        }));
+
+        window.addEventListener('hashchange', () => {
+            const key = window.location.hash.slice(1);
+            state.category = knownCategory(key) ? key : 'all';
+            render();
+        });
+
+        if (sortEl) sortEl.addEventListener('change', () => { state.sort = sortEl.value; render(); });
+
+        // The header search box filters the shop live while you type
+        if (searchInput) {
+            let timer = null;
+            searchInput.addEventListener('input', () => {
+                clearTimeout(timer);
+                timer = setTimeout(() => { state.q = searchInput.value.trim(); render(); syncUrl(); }, 150);
+            });
+        }
+        if (searchForm) {
+            searchForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                state.q = searchInput.value.trim();
+                render();
+                syncUrl();
+                searchInput.blur();                          // closes the phone keyboard
+            });
+        }
+        const chipClear = $('#search-clear');
+        if (chipClear) chipClear.addEventListener('click', () => {
+            state.q = '';
+            if (searchInput) searchInput.value = '';
+            render();
+            syncUrl();
+        });
+
+        if (priceForm) {
+            const toNumber = (el) => (el.value.trim() === '' ? null : Math.max(0, Number(el.value)));
+            priceForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                let min = toNumber(minEl);
+                let max = toNumber(maxEl);
+                if (min !== null && max !== null && min > max) [min, max] = [max, min];
+                state.min = min;
+                state.max = max;
+                minEl.value = min === null ? '' : min;
+                maxEl.value = max === null ? '' : max;
+                render();
+            });
+            const clear = $('#price-clear');
+            if (clear) clear.addEventListener('click', () => {
+                state.min = null;
+                state.max = null;
+                minEl.value = '';
+                maxEl.value = '';
+                render();
+            });
+        }
+
+        wireProductGrid(grid);
+
+        // Load the products from Firebase (only the ones switched on in the admin dashboard)
+        loadProducts()
+            .then((products) => {
+                all = products;
+                if (!all.length) {
+                    if (countEl) countEl.textContent = '';
+                    showMessage('No products to show yet. Please check back soon or contact us.', false);
+                    return;
+                }
+                render();
+            })
+            .catch(() => {
+                if (countEl) countEl.textContent = '';
+                showMessage('Products could not be loaded right now. Please refresh, or contact us on WhatsApp to place an order.', false);
+            });
     }
 
 
@@ -1142,6 +1462,9 @@
     initContactForm();
     initAccount();
     initCart();
+    initCategoryNav();
+    initSlider();
+    initHomeProducts();
     initProducts();
     initFaq();
     initGallery();

@@ -52,6 +52,7 @@
     const cancelBtn = $('#cancel-btn');
     const nameInput = $('#p-name');
     const priceInput = $('#p-price');
+    const oldPriceInput = $('#p-oldprice');
     const categorySelect = $('#p-category');
     const fileInput = $('#p-file');
     const urlInput = $('#p-url');
@@ -197,6 +198,13 @@
 
             const priceCell = document.createElement('td');
             priceCell.textContent = naira(p.price || 0);
+            if (p.oldPrice > p.price) {
+                const old = document.createElement('s');
+                old.textContent = ' ' + naira(p.oldPrice);
+                old.style.color = 'var(--muted)';
+                old.style.fontSize = '0.8rem';
+                priceCell.append(old);
+            }
 
             const catCell = document.createElement('td');
             catCell.textContent = categoryLabel(p.category);
@@ -311,7 +319,7 @@
         el.closest('.field').classList.toggle('has-error', Boolean(message));
     }
     function clearFieldErrors() {
-        ['p-name-error', 'p-price-error', 'p-category-error', 'p-image-error'].forEach((id) => fieldError(id, ''));
+        ['p-name-error', 'p-price-error', 'p-oldprice-error', 'p-category-error', 'p-image-error'].forEach((id) => fieldError(id, ''));
     }
 
     function resetForm() {
@@ -338,6 +346,7 @@
         currentImage = savedImage;
         nameInput.value = p.name || '';
         priceInput.value = p.price || '';
+        oldPriceInput.value = p.oldPrice || '';
         categorySelect.value = p.category || '';
         photoCheck.checked = Boolean(p.isPhoto);
         activeCheck.checked = p.active !== false;
@@ -437,6 +446,11 @@
 
         if (name.length < 2) { fieldError('p-name-error', 'Please enter the product name.'); ok = false; }
         if (!Number.isFinite(price) || price <= 0) { fieldError('p-price-error', 'Please enter a price greater than 0.'); ok = false; }
+        const oldPrice = oldPriceInput.value.trim() === '' ? null : Number(oldPriceInput.value);
+        if (oldPrice !== null && (!Number.isFinite(oldPrice) || oldPrice <= price)) {
+            fieldError('p-oldprice-error', 'The old price must be higher than the current price (or leave it empty).');
+            ok = false;
+        }
         if (!category) { fieldError('p-category-error', 'Please choose a category.'); ok = false; }
         if (!currentImage || !currentImage.image) { fieldError('p-image-error', 'Please add a picture.'); ok = false; }
         if (!ok) return;
@@ -444,6 +458,7 @@
         const data = {
             name,
             price: Math.round(price),
+            oldPrice: oldPrice === null ? null : Math.round(oldPrice),
             category,
             image: currentImage.image,
             thumb: currentImage.thumb || currentImage.image,
